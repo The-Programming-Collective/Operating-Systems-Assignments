@@ -25,11 +25,13 @@ public class Producer implements Runnable{
                 buffer.full.notifying();
             }
         }
-        buffer.empty.waiting();
-        buffer.mutex.waiting();
-        buffer.set(-1);
-        buffer.mutex.notifying();
-        buffer.full.notifying();
+        buffer.done=true;
+        System.out.println("End producer");
+        // buffer.empty.waiting();
+        // buffer.mutex.waiting();
+        // buffer.set(-1);
+        // buffer.mutex.notifying();
+        // buffer.full.notifying();
     }
 
     @Override

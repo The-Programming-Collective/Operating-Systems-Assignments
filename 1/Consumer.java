@@ -15,12 +15,13 @@ public class Consumer implements Runnable{
         FileWriter writer ;
         //try {
             //writer = new FileWriter(file,true);
-            while(true){
+            while(!buffer.done){
                 buffer.full.waiting();
                 buffer.mutex.waiting();
                 //consume
-                if(buffer.get()==-1)
-                    break;
+                // if(buffer.get()==-1)
+                //     break;
+                buffer.get();
                 //
                 buffer.empty.notifying();
                 buffer.mutex.notifying();

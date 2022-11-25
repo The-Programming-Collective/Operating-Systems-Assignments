@@ -15,8 +15,10 @@ public class GUI implements ActionListener {
     private static JLabel userLabel5;
     private static JLabel userLabel7;
     private static JLabel userLabel9;
+    private static JButton StartButton;
 
-    public static void main(String[] args) {    
+
+    GUI(){
         frame = new JFrame("Assignment 1");
         frame.setSize(350, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +45,7 @@ public class GUI implements ActionListener {
         userText2.setBounds(100,50,165,25);
         panel.add(userText2);
         
-        JLabel userLabel3 = new JLabel("Buffer size");
+        JLabel userLabel3 = new JLabel("Output file");
         userLabel3.setBounds(10,80,80,25);
         panel.add(userLabel3);
 
@@ -51,9 +53,10 @@ public class GUI implements ActionListener {
         userText3.setBounds(100,80,165,25);
         panel.add(userText3);
 
-        JButton Start = new JButton("Start");
-        Start.setBounds(10, 110, 80, 25);
-        panel.add(Start);
+        JButton StartButton = new JButton("Start");
+        StartButton.setBounds(10, 110, 80, 25);
+        StartButton.addActionListener(this);
+        panel.add(StartButton);
 
         ///////////////////////////////////////////////////////////////
 
@@ -93,26 +96,40 @@ public class GUI implements ActionListener {
         frame.setVisible(true);
 
         //////////////////////////////////////////////////////////////
-        
     }
 
-    private void Start(int max , int bufferSize , String fileName){
+    private static void ProgramStart(int max , int bufferSize , String fileName){
         Buffer b = new Buffer(bufferSize);
+        StopWatch stopWatch = new StopWatch();
         Thread t1 = new Thread(new Producer(b, max));
         Thread t2 = new Thread(new Consumer(b, fileName));
+        Thread t3 = new Thread(stopWatch);
         t1.start();
         t2.start();
-        int i=0;
+        t3.start();
         while(t1.isAlive()){
             userLabel5.setText(""+b.largest);
             userLabel7.setText(""+b.counter);
-            userLabel9.setText(""+i);
-            i++;
+            userLabel9.setText(""+stopWatch.time);
         }
+    }
+
+    public static void main(String[] args) {
+        new GUI();
+        // Buffer b = new Buffer(5);
+        // Thread t1 = new Thread(new Producer(b, 1000));
+        // Thread t2 = new Thread(new Consumer(b, "fileName"));
+        // t1.start();
+        // t2.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Start(0, 0, null);
+        Integer IMax = Integer.parseInt(userText1.getText());
+        int max = IMax.intValue();
+        Integer IBufferSize = Integer.parseInt(userText2.getText());
+        int bufferSize = IBufferSize.intValue();
+        String fileName = userText3.getText();
+        ProgramStart(max , bufferSize , fileName);
     }
 }

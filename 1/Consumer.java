@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,37 +12,34 @@ public class Consumer implements Runnable{
     }
 
     private void Consume(){
-        File file = new File (fName);
-        FileWriter writer ;
-        //try {
-            //writer = new FileWriter(file,true);
+       try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fName));
+            int counter=0;
+            String word;
             while(!buffer.done){
+
+                counter++;
+                if(counter>=10){
+                    word ="\n";
+                    counter=0;
+                }
+                else
+                    word = ",";
+                    
                 buffer.full.waiting();
                 buffer.mutex.waiting();
-                //consume
-                // if(buffer.get()==-1)
-                //     break;
-                buffer.get();
-                //
+                writer.write(""+buffer.get()+word);
                 buffer.empty.notifying();
                 buffer.mutex.notifying();
             }
-            buffer.empty.notifying();
-            buffer.mutex.notifying();
-            //writer.close();
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+            writer.close();
+       }
+       catch(Exception e) {}
         System.out.println("End consumer");
     }
     
     @Override
     public void run() {
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Consume();
     }
 }

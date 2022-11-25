@@ -1,6 +1,5 @@
-public class StopWatch extends Thread{
+public class StopWatch implements Runnable{
     public int time = 0;
-    // function will be repeated in a while loop in main if we have to return time. if time is outputted from function then loop inside function
     public void run(){
         while(true){
             try{
@@ -9,6 +8,5 @@ public class StopWatch extends Thread{
             time++;
         }
     }
-
-    public int getTime() {return time;}
+    
 }

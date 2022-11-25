@@ -1,10 +1,8 @@
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public class Consumer implements Runnable{
-    private static String fName="temp.txt";
+    private String fName;
     private Buffer buffer;
     Consumer(Buffer buffer ,String s){
         this.fName = s;
@@ -25,7 +23,7 @@ public class Consumer implements Runnable{
                 }
                 else
                     word = ",";
-                    
+
                 buffer.full.waiting();
                 buffer.mutex.waiting();
                 writer.write(""+buffer.get()+word);

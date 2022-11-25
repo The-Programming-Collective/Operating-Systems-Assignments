@@ -3,22 +3,22 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class GUI implements ActionListener {
+public class Main implements ActionListener{
 
-    private static JFrame frame;
-    private static JPanel main;
-    private static JPanel panel;
-    private static JPanel panel2;
-    private static JTextField userText1;
-    private static JTextField userText2;
-    private static JTextField userText3;
-    private static JLabel userLabel5;
-    private static JLabel userLabel7;
-    private static JLabel userLabel9;
-    private static JButton StartButton;
+    public  JFrame frame;
+    public  JPanel main;
+    public  JPanel panel;
+    public  JPanel panel2;
+    public  JTextField userText1;
+    public  JTextField userText2;
+    public  JTextField userText3;
+    public  JLabel userLabel5;
+    public  JLabel userLabel7;
+    public  JLabel userLabel9;
+    public  JButton StartButton;
 
 
-    GUI(){
+    Main(){
         frame = new JFrame("Assignment 1");
         frame.setSize(350, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,37 +98,26 @@ public class GUI implements ActionListener {
         //////////////////////////////////////////////////////////////
     }
 
-    private static void ProgramStart(int max , int bufferSize , String fileName){
+    private void ProgramStart(int max , int bufferSize , String fileName){
         Buffer b = new Buffer(bufferSize);
-        StopWatch stopWatch = new StopWatch();
-        Thread t1 = new Thread(new Producer(b, max));
+        Thread t1 = new Thread(new Producer(b, max, this));
         Thread t2 = new Thread(new Consumer(b, fileName));
-        Thread t3 = new Thread(stopWatch);
         t1.start();
         t2.start();
-        t3.start();
-        while(t1.isAlive()){
-            userLabel5.setText(""+b.largest);
-            userLabel7.setText(""+b.counter);
-            userLabel9.setText(""+stopWatch.time);
-        }
     }
 
     public static void main(String[] args) {
-        new GUI();
-        // Buffer b = new Buffer(5);
-        // Thread t1 = new Thread(new Producer(b, 1000));
-        // Thread t2 = new Thread(new Consumer(b, "fileName"));
-        // t1.start();
-        // t2.start();
+        new Main();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Integer IMax = Integer.parseInt(userText1.getText());
         int max = IMax.intValue();
+
         Integer IBufferSize = Integer.parseInt(userText2.getText());
         int bufferSize = IBufferSize.intValue();
+
         String fileName = userText3.getText();
         ProgramStart(max , bufferSize , fileName);
     }

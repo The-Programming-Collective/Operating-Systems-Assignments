@@ -1,9 +1,13 @@
 public class Producer implements Runnable{
     private int max;
     private Buffer buffer;
-    Producer(Buffer buffer , int max ){
+    private Main m;
+    private int counter=0;
+    StopWatch stopWatch;
+    Producer(Buffer buffer , int max , Main m ){
         this.max=max;
         this.buffer=buffer;
+        this.m=m;
     }
 
     public static boolean isprime(int n){
@@ -16,11 +20,15 @@ public class Producer implements Runnable{
     }
 
     private void Produce(int max){
+        buffer.done=false;
         for(int i=1 ; i<max ; i++){
             if(isprime(i)){
                 buffer.empty.waiting();
                 buffer.mutex.waiting();
                 buffer.set(i);
+                m.userLabel5.setText(""+i);
+                m.userLabel7.setText(""+(++counter));
+                m.userLabel9.setText(""+stopWatch.time);
                 buffer.mutex.notifying();
                 buffer.full.notifying();
             }
@@ -31,6 +39,8 @@ public class Producer implements Runnable{
 
     @Override
     public void run(){
+        stopWatch = new StopWatch();
+        new Thread(stopWatch).start();
         Produce(max);
     }
 }

@@ -27,7 +27,7 @@ public class Buffer {
         buffer[in]=val;
         in = (in+1)%size;
         counter++;
-        largest = val; 
+        largest=val;
         System.out.println("set "+val+" "+empty.counter);
     }
 }

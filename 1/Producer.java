@@ -20,6 +20,7 @@ public class Producer implements Runnable{
     }
 
     private void Produce(int max){
+        m.running=true;
         buffer.done=false;
         for(int i=1 ; i<max ; i++){
             if(isprime(i)){
@@ -34,6 +35,8 @@ public class Producer implements Runnable{
             }
         }
         buffer.done=true;
+        m.running=false;
+       // m.StartButton.setEnabled(true);
         System.out.println("End Producer");
     }
 

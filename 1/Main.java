@@ -16,7 +16,7 @@ public class Main implements ActionListener{
     public  JLabel userLabel7;
     public  JLabel userLabel9;
     public  JButton StartButton;
-
+    public boolean running = false;
 
     Main(){
         frame = new JFrame("Assignment 1");
@@ -58,6 +58,11 @@ public class Main implements ActionListener{
         StartButton.addActionListener(this);
         panel.add(StartButton);
 
+        // JButton StopButton = new JButton("Stop");
+        // StopButton.setBounds(100, 110, 80, 25);
+        // StopButton.addActionListener(this);
+        // panel.add(StopButton);
+
         ///////////////////////////////////////////////////////////////
 
         panel2 = new JPanel();
@@ -95,7 +100,8 @@ public class Main implements ActionListener{
         frame.add(main);
         frame.setVisible(true);
 
-        //////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        StartButton.setEnabled(true);
     }
 
     private void ProgramStart(int max , int bufferSize , String fileName){
@@ -112,13 +118,49 @@ public class Main implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Integer IMax = Integer.parseInt(userText1.getText());
+        
+        String maxString = userText1.getText();
+        if(!isNumeric(maxString)){
+            userText1.setText("Enter positive number");
+            return;
+        }
+        Integer IMax = Integer.parseInt(maxString);
         int max = IMax.intValue();
 
-        Integer IBufferSize = Integer.parseInt(userText2.getText());
+        String bufferSizeString = userText2.getText();
+        if(!isNumeric(bufferSizeString)){
+            userText2.setText("Enter positive number");
+            return;
+        }
+        Integer IBufferSize = Integer.parseInt(bufferSizeString);
         int bufferSize = IBufferSize.intValue();
 
         String fileName = userText3.getText();
+
+        if(running)
+            return;
+        if(max<=0){
+            userText1.setText("Must be positive");
+            return;
+        }
+        if(bufferSize<=0){
+            userText2.setText("Must be positive");
+            return;
+        }
+        if(fileName.equals("")||fileName.equals("Enter file name")){
+            userText3.setText("Enter file name");
+            return;
+        }
         ProgramStart(max , bufferSize , fileName);
     }
+
+    public static boolean isNumeric(String str) { 
+        try {  
+          Integer x = Integer.parseInt(str);
+           return (x>0); 
+        } catch(NumberFormatException e){  
+          return false;  
+        }  
+      }
+
 }

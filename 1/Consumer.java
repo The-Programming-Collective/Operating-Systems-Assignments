@@ -14,7 +14,7 @@ public class Consumer implements Runnable{
             BufferedWriter writer = new BufferedWriter(new FileWriter(fName));
             int counter=0;
             String word;
-            while(!buffer.done){
+            while(!buffer.done || buffer.in!=buffer.out){
 
                 counter++;
                 if(counter>=10){

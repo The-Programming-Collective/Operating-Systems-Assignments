@@ -1,11 +1,10 @@
 import java.util.LinkedList;
 
-public class AGscheduler implements Scheduler {
+public class AGscheduler extends Scheduler {
     protected LinkedList<Process> queue;
 
-
     @Override
-    public void startScheduler(LinkedList<Process> queue) {
+    public void startScheduler(LinkedList<Process> queue,int CST) {
         
     }
     

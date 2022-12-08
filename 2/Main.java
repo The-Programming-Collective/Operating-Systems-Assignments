@@ -103,10 +103,10 @@ public class Main {
         //     System.out.print(queue.get(i).getName()+"\n");
         // }
 
-        Scheduler rr = new RRscheduler();
-        rr.startScheduler(queue, 0);
+        // Scheduler rr = new RRscheduler();
+        // rr.startScheduler(queue, 0);
 
-        // Scheduler ps = new Priorityscheduler();
-        // ps.startScheduler(queue, 0);
+        Scheduler ps = new Priorityscheduler();
+        ps.startScheduler(queue, 0);
     }
 }

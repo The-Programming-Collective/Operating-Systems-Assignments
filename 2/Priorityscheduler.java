@@ -39,7 +39,7 @@ public class Priorityscheduler extends Scheduler {
                 queue.get(i).decrementBurstTime();
                 time++;
                 if(queue.get(i).getBurstTime()==0){
-                    queue.get(i).setTerminationTime(time+1);
+                    queue.get(i).setTerminationTime(time);
                     done++;
                     break;
                 }
@@ -52,5 +52,6 @@ public class Priorityscheduler extends Scheduler {
             }
             ageQueue(queue,queue.get(i));
         }
+        super.getInfo(queue);
     }
 }

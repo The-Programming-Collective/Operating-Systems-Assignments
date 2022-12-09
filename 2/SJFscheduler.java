@@ -6,7 +6,7 @@ public class SJFscheduler extends Scheduler {
     @Override
     public void startScheduler(LinkedList<Process> processes,int CST){
         queue = processes;
-        int actualStartTime = 0, initialSize=queue.size();
+        initialSize=queue.size();
 
         do{
             getInSchedule();
@@ -17,12 +17,12 @@ public class SJFscheduler extends Scheduler {
         Collections.sort(temp, Comparator.comparingInt(obj -> obj.getBurstTime()));
 
         while(done!=initialSize){
-            for(int c=0 ;  temp.getFirst().getBurstTime()>0 ; c++,time++){
+            for(int c=0 ;  temp.getFirst().getBurstTime()>0 && !isDone() ; c++,time++){
                 if(time!=actualStartTime){getInSchedule();}
 
                 Process p1 = temp.getFirst();
                 Collections.sort(temp, Comparator.comparingInt(obj -> obj.getBurstTime()));
-                if(p1!=temp.getFirst()){
+                if(! p1.equals(temp.getFirst())){
                     time+=CST;
                 }
 
@@ -42,4 +42,3 @@ public class SJFscheduler extends Scheduler {
         getInfo(queue);
     }
 }
-

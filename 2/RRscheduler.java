@@ -4,7 +4,7 @@ public class RRscheduler extends Scheduler {
     @Override
     public void startScheduler(LinkedList<Process> processes,int CST){
         queue = processes;
-        int actualStartTime=0 , initialSize = queue.size();
+        initialSize = queue.size();
         
         do{
             getInSchedule();

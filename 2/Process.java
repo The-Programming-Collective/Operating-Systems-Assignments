@@ -4,8 +4,9 @@ public class Process {
     private int priority;
     private int burstTime;
     private int quantum;
+    private int remainingQuantum;
     private int terminationTime;
-    private int totalBurstTime; // 
+    private int totalBurstTime;
 
     Process(String name ,int arrivalTime , int priority , int burstTime , int quantum){
         this.name = name;
@@ -13,7 +14,8 @@ public class Process {
         this.priority = priority;
         this.burstTime = burstTime;
         this.quantum = quantum;
-        totalBurstTime = burstTime; 
+        totalBurstTime = burstTime;
+        remainingQuantum=  quantum;
     }
 
     public String getName() {return name; }
@@ -24,14 +26,17 @@ public class Process {
     public int getTerminationTime() {return terminationTime; }
     public int getTurnAroundTime() {return terminationTime-arrivalTime; }
     public int getWaitingTime() {return getTurnAroundTime()-totalBurstTime; }
+    public int getTotalBurstTime() {return totalBurstTime; }
+    public int getRemainingQuantum() {return remainingQuantum; }
 
     public void setName(String name) {this.name = name; }
     public void setArrivalTime(int arrivalTime) {this.arrivalTime = arrivalTime; }
     public void setPriority(int priority) {this.priority = priority; }
     public void setBurstTime(int burstTime) {this.burstTime = burstTime; }
-    public void setQuantum(int quantum) {this.quantum = quantum; }
+    public void setQuantum(int quantum) {this.quantum = quantum;this.remainingQuantum = quantum; }
     public void setTerminationTime(int terminationTime) {this.terminationTime = terminationTime; }
     public void decrementBurstTime() {this.burstTime--; }
+    public void decrementRemainingQuantum() {this.remainingQuantum--; }
     public void incrementPriority() {this.priority--;}
 
 }

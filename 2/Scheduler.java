@@ -5,6 +5,8 @@ public abstract class Scheduler{
     protected LinkedList<Process> temp;
     protected int time = 0;
     protected int done = 0;
+    protected int actualStartTime = 0;
+    protected int initialSize = 0;
 
     Scheduler(){
         temp = new LinkedList<>();
@@ -21,6 +23,18 @@ public abstract class Scheduler{
             }
         }
             
+    }
+
+    public boolean isDone(){
+        if(temp.size()!=0)
+            return false;
+        if(queue.size()!=initialSize)
+            return false;
+        for(int i=0 ; i<initialSize ; i++){
+            if(queue.get(i).getBurstTime()!=0)
+                return false;
+        }
+        return true;
     }
     
     public void getInfo(LinkedList<Process> queue){

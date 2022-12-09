@@ -76,18 +76,18 @@ public class Main {
     // }
 
     public static void main(String[] args) {
-        Process a1= new Process("a1", 0, 5, 5, 5);
-        Process a2= new Process("a2", 0, 4, 2, 5);
-        Process a3= new Process("a3", 5, 5, 8, 5);
-        Process a4= new Process("a4", 10, 1, 5, 5);
-        Process a5= new Process("a5", 3, 0, 7, 5);
+        Process a1= new Process("p1", 0, 4, 17, 7);
+        Process a2= new Process("p2", 2, 7, 6, 9);
+        Process a3= new Process("p3", 5, 3, 11, 4);
+        Process a4= new Process("p4", 15, 6, 4, 6);
+        //Process a5= new Process("a5", 3, 0, 7, 5);
 
         LinkedList<Process> queue = new LinkedList<>();
         queue.addLast(a1);
         queue.addLast(a2);
         queue.addLast(a3);
         queue.addLast(a4);
-        queue.addLast(a5);
+        ////queue.addLast(a5);
 
         Collections.sort(queue, Comparator.comparingInt(obj -> obj.getArrivalTime()));
 
@@ -110,7 +110,10 @@ public class Main {
         // Scheduler ps = new Priorityscheduler();
         // ps.startScheduler(queue, 0);
 
-        Scheduler SJF = new SJFscheduler();
-        SJF.startScheduler(queue, 0);
+        // Scheduler SJF = new SJFscheduler();
+        // SJF.startScheduler(queue, 0);
+
+        Scheduler AG = new AGscheduler();
+        AG.startScheduler(queue,0);
     }
 }

@@ -35,6 +35,7 @@ public class Main {
         
     //     for(int i=0 ; i<NOP ; i++){
     //         try{
+                    //TODO add a check for no 0 arrival time process 
     //             System.out.print("Enter process "+(i+1)+" name, arrival time, priority, burst time, quantum: ");
     //             String name = scanner.next();
     //             int arrivalTime = Integer.parseInt(scanner.next());
@@ -106,7 +107,10 @@ public class Main {
         // Scheduler rr = new RRscheduler();
         // rr.startScheduler(queue, 0);
 
-        Scheduler ps = new Priorityscheduler();
-        ps.startScheduler(queue, 0);
+        // Scheduler ps = new Priorityscheduler();
+        // ps.startScheduler(queue, 0);
+
+        Scheduler SJF = new SJFscheduler();
+        SJF.startScheduler(queue, 0);
     }
 }

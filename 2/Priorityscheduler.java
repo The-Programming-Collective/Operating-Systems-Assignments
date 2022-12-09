@@ -52,6 +52,6 @@ public class Priorityscheduler extends Scheduler {
             }
             ageQueue(queue,queue.get(i));
         }
-        super.getInfo(queue);
+        getInfo(queue);
     }
 }

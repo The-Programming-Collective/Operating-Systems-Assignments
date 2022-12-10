@@ -8,7 +8,7 @@ public class Process {
     private int terminationTime;
     private int totalBurstTime;
 
-    Process(String name ,int arrivalTime , int priority , int burstTime , int quantum){
+    Process(String name ,int arrivalTime ,int burstTime , int priority, int quantum){
         this.name = name;
         this.arrivalTime = arrivalTime;
         this.priority = priority;

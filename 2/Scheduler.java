@@ -1,49 +1,36 @@
 import java.util.LinkedList;
 
 public abstract class Scheduler{
-    protected LinkedList<Process> queue;
-    protected LinkedList<Process> temp;
+    protected LinkedList<Process> readyQueue;
     protected int time = 0;
     protected int done = 0;
     protected int actualStartTime = 0;
     protected int initialSize = 0;
 
-    Scheduler(){
-        temp = new LinkedList<>();
-        queue = new LinkedList<>();
-    }
+    //Default constructor to initialize the readyQueue
+    Scheduler(){readyQueue = new LinkedList<>();}
 
-    public abstract void startScheduler(LinkedList<Process> queue,int CST);
+    //Abstract start function that takes processes list and context switch time
+    public abstract void startScheduler(LinkedList<Process> processes,int CST);
 
-    public void getInSchedule(){
-        for(int i=0 ; i<queue.size() ; i++){
-            if(queue.get(i).getBurstTime()>0 && queue.get(i).getArrivalTime()<=time){
-                temp.addLast(queue.remove(i));
+    //A function to add a queue to the ready queue if the arrival time is met
+    public void getInSchedule(LinkedList<Process> processes){
+        for(int i=0 ; i<processes.size() ; i++){
+            if(processes.get(i).getBurstTime()>0 && processes.get(i).getArrivalTime()<=time){
+                readyQueue.addLast(processes.remove(i));
                 i--;
             }
-        }
-            
-    }
-
-    public boolean isDone(){
-        if(temp.size()!=0)
-            return false;
-        if(queue.size()!=initialSize)
-            return false;
-        for(int i=0 ; i<initialSize ; i++){
-            if(queue.get(i).getBurstTime()!=0)
-                return false;
-        }
-        return true;
+        }        
     }
     
-    public void getInfo(LinkedList<Process> queue){
+    //A function that prints the wait, avg wait, turnAround and avg turnAround of a process list
+    public void getInfo(LinkedList<Process> processes){
         double wait=0 , turn=0;
-        for(int i=0 ; i<queue.size() ; i++){
-            wait+=queue.get(i).getWaitingTime();
-            turn+=queue.get(i).getTurnAroundTime();
-            System.out.print(queue.get(i).getName()+"-"+"Wait: "+queue.get(i).getWaitingTime()+" TurnAround: "+queue.get(i).getTurnAroundTime()+"\n");
+        for(int i=0 ; i<processes.size() ; i++){
+            wait+=processes.get(i).getWaitingTime();
+            turn+=processes.get(i).getTurnAroundTime();
+            System.out.print(processes.get(i).getName()+"-"+"Wait: "+processes.get(i).getWaitingTime()+" TurnAround: "+processes.get(i).getTurnAroundTime()+"\n");
         }
-        System.out.print("Average wait time: "+wait/queue.size()+"\nAverage turn around time: "+turn/queue.size());
+        System.out.print("Average wait time: "+wait/processes.size()+"\nAverage turn around time: "+turn/processes.size());
     }
 }

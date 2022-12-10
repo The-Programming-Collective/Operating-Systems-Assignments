@@ -35,9 +35,7 @@ public class SJFscheduler extends Scheduler {
                 Process p = readyQueue.getFirst();
                 Collections.sort(readyQueue, Comparator.comparingInt(obj -> obj.getBurstTime()));
                 if(! p.equals(readyQueue.getFirst())){
-                    for(int x=1 ; x<readyQueue.size() ; x++){
-                        readyQueue.get(x).incrementPriority();
-                    }
+                    for(int i=0 ; i<CST ; i++){System.out.print((time++)+"-Context switch"+"\n");}
                 }
 
                 System.out.print((time)+"-process "+readyQueue.getFirst().getName()+"\n");
@@ -48,9 +46,7 @@ public class SJFscheduler extends Scheduler {
                 if(readyQueue.getFirst().getBurstTime()==0){
                     done++;
                     time++;
-                    for(int x=1 ; x<readyQueue.size() ; x++){
-                        readyQueue.get(x).incrementPriority();
-                    }
+                    for(int i=0 ; i<CST ; i++){System.out.print((time++)+"-Context switch"+"\n");}
                     readyQueue.getFirst().setTerminationTime(time);
                     break;
                 }

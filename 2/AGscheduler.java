@@ -25,9 +25,7 @@ public class AGscheduler extends Scheduler {
             switch(state){
                 case 0:
                     //FCFS untill 25%
-                    readyQueue.get(currentProcessIndex).decrementBurstTime();
-                    readyQueue.get(currentProcessIndex).decrementRemainingQuantum();
-                    System.out.print((time)+"-process "+readyQueue.get(currentProcessIndex).getName()+"\n");
+                    work();
 
                     //if the process finishes all its burstTime c.iv
                     if(readyQueue.get(currentProcessIndex).getBurstTime()==0){
@@ -48,7 +46,7 @@ public class AGscheduler extends Scheduler {
                     previousState = state;
                     state = 1;
                     break;
-                    
+
                 case 1:
                     //If the previousState wasn't 1 aka first time switching to non-preemptive priority
                     //Check if the currently running process is the highest priority
@@ -64,9 +62,7 @@ public class AGscheduler extends Scheduler {
                         previousState = state;
                     }
 
-                    readyQueue.get(currentProcessIndex).decrementBurstTime();
-                    readyQueue.get(currentProcessIndex).decrementRemainingQuantum();
-                    System.out.print((time)+"-process "+readyQueue.get(currentProcessIndex).getName()+"\n");
+                    work();
 
                     //if the process finishes all its burstTime c.iv
                     if(readyQueue.get(currentProcessIndex).getBurstTime()==0){
@@ -105,9 +101,7 @@ public class AGscheduler extends Scheduler {
                     }
 
                     currentProcessIndex = getMinJob();
-                    readyQueue.get(currentProcessIndex).decrementBurstTime();
-                    readyQueue.get(currentProcessIndex).decrementRemainingQuantum();
-                    System.out.print((time)+"-process "+readyQueue.get(currentProcessIndex).getName()+"\n");
+                    work();
 
                     //if the process finishes all its burstTime c.iv
                     if(readyQueue.get(currentProcessIndex).getBurstTime()==0){
@@ -169,5 +163,12 @@ public class AGscheduler extends Scheduler {
         previousState = state;
         state = 0;
         currentProcessIndex = 0;
+    }
+
+    //Decrement burstTime and remainingQuantumTime and print the timeline
+    public void work(){
+        readyQueue.get(currentProcessIndex).decrementBurstTime();
+        readyQueue.get(currentProcessIndex).decrementRemainingQuantum();
+        System.out.print((time)+"-process "+readyQueue.get(currentProcessIndex).getName()+"\n");
     }
 }

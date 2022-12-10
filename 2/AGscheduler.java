@@ -100,13 +100,21 @@ public class AGscheduler extends Scheduler {
                 case 2:
                     //Preemptive shortest job first case
                     //Will keep executing untill a shorter process arrives
-                    //Or a higher priority process arrives
-                    //In both cases it will apply case c.iii
+                    //apply case c.iii
                     Process p = readyQueue.get(index);
-                    if(! p.equals(readyQueue.get(getMinJob())) || p.getPriority()>readyQueue.getLast().getPriority()){
+                    if(! p.equals(readyQueue.get(getMinJob()))){
                         readyQueue.remove(p);
                         quantumUpdates.addLast("Process "+p.getName()+" quantum changed from "+p.getQuantum()+" to "+(p.getQuantum()+p.getRemainingQuantum())+" at "+time);
                         p.setQuantum(p.getQuantum()+p.getRemainingQuantum());
+                        readyQueue.addLast(p);
+                        previousState = state;
+                        state = 0;
+                    }
+                    //If the process finishes its quantumTime c.i
+                    if(p.getRemainingQuantum()==0){
+                        readyQueue.remove(p);
+                        quantumUpdates.addLast("Process "+p.getName()+" quantum changed from "+p.getQuantum()+" to "+(p.getQuantum()+2)+" at "+time);
+                        p.setQuantum(p.getQuantum()+2);
                         readyQueue.addLast(p);
                         previousState = state;
                         state = 0;
@@ -133,7 +141,7 @@ public class AGscheduler extends Scheduler {
         }
         //Display quantum updates
         for(int i=0 ; i<quantumUpdates.size() ; i++)
-            System.out.print(quantumUpdates.get(index)+"\n");
+            System.out.print(quantumUpdates.get(i)+"\n");
 
         //Display final stats;
         getInfo(processes);

@@ -1,24 +1,12 @@
+import java.util.DuplicateFormatFlagsException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
-       private static LinkedList<Process> queue = new LinkedList<Process>();
+        private static LinkedList<Process> queue = new LinkedList<Process>();
+        private static Scanner scanner = new Scanner(System.in);
+        private static int NOP,CST;
         public static void main(String[] args) {
-
-        System.out.print("Select The Desired Process Scheduler\n");
-        System.out.print("1-Preemptive Shortest-Job First (SJF).\n2-Round Robin (RR).\n3-Preemptive Priority Scheduling.\n4-AG Scheduling.\n:");
-        Scanner scanner = new Scanner(System.in);
-        int choice=99;
-        
-        while(true){
-            try{choice = Integer.parseInt(scanner.nextLine());
-                if(choice>=1 && choice<=4)
-                    break;
-                System.out.print("out of range value.\n");
-            }catch(Exception e){System.out.print("Enter an int from 1-4.\n");}
-        }
-
-        int NOP,CST;
 
         while(true){
             try{
@@ -28,9 +16,70 @@ public class Main {
                 CST = Integer.parseInt(scanner.nextLine());
                 if(NOP<0 || CST<0){throw new Exception();}
                 break;
-            }catch(Exception e){System.out.print("Error, enter valid ints.");}
+            }catch(Exception e){System.out.print("Error, enter valid ints.\n");}
         }
         
+        addProcesses();
+
+        System.out.print("\nCurrent context switch time: "+CST+"\nSelect The Desired Process Scheduler:-\n");
+        System.out.print("1-Preemptive Shortest-Job First (SJF).\n2-Round Robin (RR).\n3-Preemptive Priority Scheduling.\n4-AG Scheduling.\n5-Change Context switch time.\n6-Add processes.\n7-Exit.\n:");
+        int choice;
+        boolean isOn = true;
+
+        while(isOn){
+            try{choice = Integer.parseInt(scanner.nextLine());}
+            catch(Exception e){choice=-1;}
+        
+            switch (choice){
+                case 1:
+                    Scheduler preemptiveShortest = new SJFscheduler();
+                    preemptiveShortest.startScheduler(new LinkedList<Process>(queue),CST);
+                    break;
+                case 2:
+                    Scheduler roundRobin = new RRscheduler();
+                    roundRobin.startScheduler(new LinkedList<Process>(queue),CST);
+                    break;
+                case 3:
+                    Scheduler preemptivePriority = new Priorityscheduler();
+                    preemptivePriority.startScheduler(new LinkedList<Process>(queue),CST);
+                    break;       
+                case 4:
+                    Scheduler agSchedule = new AGscheduler();
+                    agSchedule.startScheduler(new LinkedList<Process>(queue),CST);
+                    break;
+                case 5:
+                    while(true){
+                        try{
+                            System.out.print("Enter context switch time: ");
+                            CST = Integer.parseInt(scanner.nextLine());
+                            if(CST<0){throw new Exception();}
+                            break;
+                        }catch(Exception e){System.out.print("Error, enter valid int.\n");}
+                    }
+                    break;
+                case 6:
+                    while(true){
+                        try{
+                            System.out.print("Enter number of processes: ");
+                            NOP = Integer.parseInt(scanner.nextLine());
+                            if(NOP<0){throw new Exception();}
+                            break;
+                        }catch(Exception e){System.out.print("Error, enter valid int.\n");}
+                    }
+                    addProcesses();
+                    break;
+                case 7:
+                    isOn=!isOn;
+                    break;
+                default:
+                    System.out.print("Invalid selection.\n");
+                    break;
+            }
+        }
+        scanner.close();
+    }
+
+    public static void addProcesses(){
         for(int i=0 ; i<NOP ; i++){
             try{ 
                 System.out.print("Enter process "+(i+1)+" name, arrival time, burst time, priority,  quantum: ");
@@ -42,34 +91,15 @@ public class Main {
 
                 if(arrivalTime<0 || priority<0 || burstTime<=0 || quantum<=0){throw new Exception();}
 
-                queue.addLast(new Process(name, arrivalTime, priority, burstTime, quantum));}
-            catch(Exception e){System.out.print("Error, Enter only 0 or positive Integers.\n");i--;}
+                Process p = new Process(name, arrivalTime, burstTime, priority, quantum);
+                if(queue.contains(p)){throw new DuplicateFormatFlagsException(name);}
+
+                queue.addLast(p);
+            }
+            catch(DuplicateFormatFlagsException e){System.out.print("Error, process "+e.getMessage()+" already exists.\n");i--;}
+            catch(Exception e){System.out.print("Error, this process is not accepted.\n");i--;}
         };
-
-        switch (choice){
-            case 1:
-                Scheduler preemptiveShortest = new SJFscheduler();
-                preemptiveShortest.startScheduler(new LinkedList<Process>(queue),CST);
-                break;
-            case 2:
-                Scheduler roundRobin = new RRscheduler();
-                roundRobin.startScheduler(new LinkedList<Process>(queue),CST);
-                break;
-            case 3:
-                Scheduler preemptivePriority = new Priorityscheduler();
-                preemptivePriority.startScheduler(new LinkedList<Process>(queue),CST);
-                break;       
-            case 4:
-                Scheduler agSchedule = new AGscheduler();
-                agSchedule.startScheduler(new LinkedList<Process>(queue),CST);
-                break;
-            default:
-                System.out.print("Error.\n");
-                break;
-        }
-        scanner.close();
     }
-
     // public static void main(String[] args) {
     //     // Process a1= new Process("p1", 0, 4, 17, 7);
     //     // Process a2= new Process("p2", 2, 7, 6, 9);
@@ -110,18 +140,13 @@ public class Main {
     // }
 }
 
+//Collections.sort(queue, Comparator.comparingInt(obj -> obj.getArrivalTime()));
 
-
-
-
-
-        //Collections.sort(queue, Comparator.comparingInt(obj -> obj.getArrivalTime()));
-
-        // Collections.sort(queue, new Comparator<Process>() {     //sorts by arrival and priority
-        //     @Override
-        //     public int compare(Process o1, Process o2) {
-        //         if(o1.getArrivalTime()==o2.getArrivalTime())
-        //             return o1.getPriority()-o2.getPriority();
-        //         return  o1.getArrivalTime()-o2.getArrivalTime();
-        //     }
-        // })
+// Collections.sort(queue, new Comparator<Process>() {     //sorts by arrival and priority
+//     @Override
+//     public int compare(Process o1, Process o2) {
+//         if(o1.getArrivalTime()==o2.getArrivalTime())
+//             return o1.getPriority()-o2.getPriority();
+//         return  o1.getArrivalTime()-o2.getArrivalTime();
+//     }
+// })

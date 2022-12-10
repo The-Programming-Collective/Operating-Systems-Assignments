@@ -39,4 +39,12 @@ public class Process {
     public void decrementRemainingQuantum() {this.remainingQuantum--; }
     public void incrementPriority() {this.priority--;}
 
+    @Override
+    public boolean equals(Object obj) {
+        Process temp = (Process) obj;
+        if(!this.name.equals(temp.name))
+            return false;
+        return true;
+    }
+
 }

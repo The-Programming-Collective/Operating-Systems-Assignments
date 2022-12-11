@@ -35,6 +35,9 @@ public class RRscheduler extends Scheduler {
                 }
             }
             for(int i=0 ; i<CST ; i++){System.out.print((time++)+"-Context switch"+"\n");}
+
+            //Checks if a process arrived while context switching
+            if(time!=actualStartTime){getInSchedule(processes);}
             
             //If the process is done aka burstTime = 0 : move to processes list
             //If the process finished its quantumTime and still got work to do : move to the end of readyQueue

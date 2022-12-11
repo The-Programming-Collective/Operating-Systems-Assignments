@@ -36,6 +36,7 @@ public class AGscheduler extends Scheduler {
                     //if the process finishes its quantumTime c.i
                     if(readyQueue.get(currentProcessIndex).getRemainingQuantum()==0){
                         quantumDone(processes, quantumUpdates);
+                        break;
                     }
                     
                     //if the process didn't finish 25% of its quantumTime break
@@ -73,6 +74,7 @@ public class AGscheduler extends Scheduler {
                     //if the process finishes its quantumTime c.i
                     if(readyQueue.get(currentProcessIndex).getRemainingQuantum()==0){
                         quantumDone(processes, quantumUpdates);
+                        break;
                     }
 
                     //If the process didn't finish 50% of its quantumTime break
@@ -112,6 +114,7 @@ public class AGscheduler extends Scheduler {
                     //If the process finishes its quantumTime c.i
                     if(readyQueue.get(currentProcessIndex).getRemainingQuantum()==0){
                         quantumDone(processes, quantumUpdates);
+                        break;
                     }
                     break;
             }
@@ -145,7 +148,7 @@ public class AGscheduler extends Scheduler {
     //process finished its burst time
     public void processDone(LinkedList<Process> processes , LinkedList<String> quantumUpdates){
         Process p = readyQueue.remove(currentProcessIndex);
-        p.setTerminationTime(time);
+        p.setTerminationTime(time+1);
         quantumUpdates.addLast("Process "+p.getName()+" quantum changed from "+p.getQuantum()+" to 0 at "+time);
         p.setQuantum(0);
         processes.addLast(p);

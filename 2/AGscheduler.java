@@ -99,10 +99,10 @@ public class AGscheduler extends Scheduler {
                         previousState = state;
                         state = 0;
                         time--;
+                        currentProcessIndex = getMinJob();
                         break;
                     }
 
-                    currentProcessIndex = getMinJob();
                     work();
 
                     //if the process finishes all its burstTime c.iv

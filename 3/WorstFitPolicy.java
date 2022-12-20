@@ -2,8 +2,9 @@ import java.util.LinkedList;
 
 public class WorstFitPolicy extends AllocationPolicy {
     public void start(LinkedList<Partition> partitions, LinkedList<Process> processes) {
+
         for(int i=0 ; i<processes.size() ; i++){
-            Pair fit = new Pair(-1,Integer.MIN_VALUE) ;
+            Pair fit = new Pair(-1,Integer.MIN_VALUE);
             for(int j=0 ; j<partitions.size() ; j++){
                 if(partitions.get(j).process==null && 
                 partitions.get(j).size>=processes.get(i).size &&
@@ -12,10 +13,9 @@ public class WorstFitPolicy extends AllocationPolicy {
                     fit.size=partitions.get(j).size;
                 }
             }
+            //found a partition
             if(fit.index!=-1)
                 partitions.get(fit.index).process=processes.remove(i--);
         }
-        
     }
-    
 }

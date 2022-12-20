@@ -1,46 +1,82 @@
 import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Main{
+    public static LinkedList<Partition> partitions = new LinkedList<>();
+    public static LinkedList<Process> processes = new LinkedList<>();
+    public static Scanner s= new Scanner(System.in);
+    public static final String ANSI_RED = "\u001B[31m";
+
     public static void main(String[] args) {
+
+        int NOPartitions = getPositiveInt("Enter number of partitions: ");
+        for(int i=0 ; i<NOPartitions ; i++)
+            partitions.addLast(new Partition("Partition "+i,getPositiveInt("Enter Partition "+i+" size: ")));
+
+        int NOProcesses = getPositiveInt("Enter number of processes: ");
+        if(NOProcesses>NOPartitions+1)
+            System.out.print(ANSI_RED+"There will always "+(NOProcesses-(NOPartitions+1))+" processes that can't be allocated."+ANSI_RED+"\n");
+        for(int i=0 ; i<NOProcesses ; i++)
+            partitions.addLast(new Partition("Process "+i,getPositiveInt("Enter Process "+i+" size: ")));
         
+        int choice;
+        AllocationPolicy policy;
+        do{
+            choice = getPositiveInt("Select a policy to apply: \n1-First fit.\n2-Best fit.\n3-Worst fit.\n: ");
+            switch(choice){
+                case 1 : 
+                    policy = new FirstFitPolicy();
+                    policy.start(partitions, processes);
+                    break;
+                case 2 :
+                    policy = new BestFitPolicy();
+                    policy.start(partitions, processes);
+                    break;
+                default :
+                    policy = new WorstFitPolicy();
+                    policy.start(partitions, processes);
+                    break; 
+            }
+        }while(choice>3);
+        
+        printPartitions("Before compaction");
+        choice = getPositiveInt("Do you want to compact? 1.yes 2.no : ");
+        if(choice==1){
+            policy.compaction(partitions);
+            policy.start(partitions, processes);
+            printPartitions("After compaction");
+        }
 
-        Process p1 = new Process("Process1",15);
-        Process p2 = new Process("Process2",90);
-        Process p3 = new Process("Process3",30);
-        Process p4 = new Process("Process4",100);
-        LinkedList<Process> processes = new LinkedList<>();
-        processes.addLast(p1);
-        processes.addLast(p2);
-        processes.addLast(p3);
-        processes.addLast(p4);
+        s.close();
+    }
 
+    //A function that displays a text and gets a positive int from user
+    public static int getPositiveInt(String args){
+        int num;
+        do{
+            try{
+                System.out.print(args);
+                num = Integer.parseInt(s.nextLine());
+                if(num<=0)
+                    throw new Exception();
+                break;
+            }catch(Exception e){System.out.print("Invalid input.\n");}
+        }while(true);
+        return num;
+    }
 
-        Partition pa0 = new Partition("Partition0", 90);
-        Partition pa1 = new Partition("Partition1", 20);
-        Partition pa2 = new Partition("Partition2", 5);
-        Partition pa3 = new Partition("Partition3", 30);
-        Partition pa4 = new Partition("Partition4", 120);
-        Partition pa5 = new Partition("Partition5", 80);
-        LinkedList<Partition> partitions = new LinkedList<>();
-        partitions.addLast(pa0);
-        partitions.addLast(pa1);
-        partitions.addLast(pa2);
-        partitions.addLast(pa3);
-        partitions.addLast(pa4);
-        partitions.addLast(pa5);
-
-        AllocationPolicy bestFit = new BestFitPolicy();
-        bestFit.start(partitions, processes);
-
-        // AllocationPolicy worstFit = new WorstFitPolicy();
-        // worstFit.start(partitions, processes);
-
+    //A function to print current partitions,  processes status 
+    private static void printPartitions(String state){
+        System.out.print("================"+state+"================\n");
         for(int i=0 ; i<partitions.size() ; i++){
             if(partitions.get(i).process==null)
-                System.out.print(partitions.get(i).name+" External fragment.\n");
+                System.out.print(partitions.get(i).name+" of size: "+partitions.get(i).size+" External fragment.\n");
             
             else
-                System.out.print(partitions.get(i).name+ " has "+partitions.get(i).process.name+".\n");
+                System.out.print(partitions.get(i).name+" of size: "+partitions.get(i).size+ " has "+partitions.get(i).process.name+" of size: "+partitions.get(i).process.size+".\n");
+        }
+        for(int i=0 ; i<processes.size() ; i++){
+            System.out.print(processes.get(i).name+" can't be allocated.\n");
         }
     }
 }

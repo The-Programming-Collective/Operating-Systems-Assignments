@@ -6,6 +6,7 @@ public class Main{
     public static LinkedList<Process> processes = new LinkedList<>();
     public static Scanner s= new Scanner(System.in);
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     public static void main(String[] args) {
 
@@ -15,9 +16,9 @@ public class Main{
 
         int NOProcesses = getPositiveInt("Enter number of processes: ");
         if(NOProcesses>NOPartitions+1)
-            System.out.print(ANSI_RED+"There will always "+(NOProcesses-(NOPartitions+1))+" processes that can't be allocated."+ANSI_RED+"\n");
+            System.out.print(ANSI_RED+"There will always "+(NOProcesses-(NOPartitions+1))+" processes that can't be allocated."+ANSI_RESET+"\n");
         for(int i=0 ; i<NOProcesses ; i++)
-            partitions.addLast(new Partition("Process "+i,getPositiveInt("Enter Process "+i+" size: ")));
+            processes.addLast(new Process("Process "+i,getPositiveInt("Enter Process "+i+" size: ")));
         
         int choice;
         AllocationPolicy policy;

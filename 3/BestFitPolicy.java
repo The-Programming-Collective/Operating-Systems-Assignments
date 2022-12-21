@@ -16,10 +16,11 @@ public class BestFitPolicy extends AllocationPolicy{
                     fit.size=partitions.get(j).size;
                 }
             }
-            if(fit.index!=-1)
+            //found a partition
+            if(fit.index!=-1){
                 partitions.get(fit.index).process=processes.remove(i--);
-        }
-        
+                refreshPartitions(partitions, fit.index);
+            }
+        }   
     }
-    
 }

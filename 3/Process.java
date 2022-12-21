@@ -1,8 +1,10 @@
 public class Process {
     public String name;
     public int size;
-    Process(String name , int size){
-        this.name = name;
+    public static int count=1;
+    
+    Process(int size){
+        this.name = "Process "+(count++);
         this.size = size;
     }
 }

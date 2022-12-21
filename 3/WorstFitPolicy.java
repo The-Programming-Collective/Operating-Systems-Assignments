@@ -4,6 +4,9 @@ public class WorstFitPolicy extends AllocationPolicy {
     public void start(LinkedList<Partition> partitions, LinkedList<Process> processes) {
 
         for(int i=0 ; i<processes.size() ; i++){
+            //used to keep track of the partition index and the size
+            //with -1 used as an indicator that no partition was found
+            //for that process and a MIN_VALUE to be used as a base
             Pair fit = new Pair(-1,Integer.MIN_VALUE);
             for(int j=0 ; j<partitions.size() ; j++){
                 if(partitions.get(j).process==null && 
@@ -14,8 +17,10 @@ public class WorstFitPolicy extends AllocationPolicy {
                 }
             }
             //found a partition
-            if(fit.index!=-1)
+            if(fit.index!=-1){
                 partitions.get(fit.index).process=processes.remove(i--);
+                refreshPartitions(partitions, fit.index);
+            }
         }
     }
 }

@@ -12,13 +12,13 @@ public class Main{
 
         int NOPartitions = getPositiveInt("Enter number of partitions: ");
         for(int i=0 ; i<NOPartitions ; i++)
-            partitions.addLast(new Partition("Partition "+i,getPositiveInt("Enter Partition "+i+" size: ")));
+            partitions.addLast(new Partition(getPositiveInt("Enter Partition "+i+" size: ")));
 
         int NOProcesses = getPositiveInt("Enter number of processes: ");
         if(NOProcesses>NOPartitions+1)
             System.out.print(ANSI_RED+"There will always "+(NOProcesses-(NOPartitions+1))+" processes that can't be allocated."+ANSI_RESET+"\n");
         for(int i=0 ; i<NOProcesses ; i++)
-            processes.addLast(new Process("Process "+i,getPositiveInt("Enter Process "+i+" size: ")));
+            processes.addLast(new Process(getPositiveInt("Enter Process "+i+" size: ")));
         
         int choice;
         AllocationPolicy policy;
@@ -51,6 +51,7 @@ public class Main{
         s.close();
     }
 
+
     //A function that displays a text and gets a positive int from user
     public static int getPositiveInt(String args){
         int num;
@@ -71,13 +72,15 @@ public class Main{
         System.out.print("================"+state+"================\n");
         for(int i=0 ; i<partitions.size() ; i++){
             if(partitions.get(i).process==null)
-                System.out.print(partitions.get(i).name+" of size: "+partitions.get(i).size+" External fragment.\n");
+                System.out.print(partitions.get(i).name+" ("+partitions.get(i).size+" KB) => External fragment\n");
             
             else
-                System.out.print(partitions.get(i).name+" of size: "+partitions.get(i).size+ " has "+partitions.get(i).process.name+" of size: "+partitions.get(i).process.size+".\n");
+                System.out.print(partitions.get(i).name+ " ("+partitions.get(i).process.size+" KB) => "+partitions.get(i).process.name+"\n");
         }
         for(int i=0 ; i<processes.size() ; i++){
-            System.out.print(processes.get(i).name+" can't be allocated.\n");
+            if(i==0)
+                System.out.print("\n");
+            System.out.print(processes.get(i).name+" can't be allocated\n");
         }
     }
 }

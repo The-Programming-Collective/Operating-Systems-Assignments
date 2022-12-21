@@ -18,7 +18,7 @@ public class Main{
         if(NOProcesses>NOPartitions+1)
             System.out.print(ANSI_RED+"There will always "+(NOProcesses-(NOPartitions+1))+" processes that can't be allocated."+ANSI_RESET+"\n");
         for(int i=0 ; i<NOProcesses ; i++)
-            processes.addLast(new Process(getPositiveInt("Enter Process "+i+" size: ")));
+            processes.addLast(new Process(getPositiveInt("Enter Process "+(i+1)+" size: ")));
         
         int choice;
         AllocationPolicy policy;
